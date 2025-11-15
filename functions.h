@@ -82,8 +82,32 @@ stats shaker_sort(std::vector<T>& vec) {
 }
 
 template<typename T>
-stats quick_sort(std::vector<T>& vec) { 
-    return stats(); 
+stats quick_sort(std::vector<T>& vec) {
+    if (vec.size() < 2) return stats();
+    
+    struct qsort {
+        static void qsort_step(std::vector<T>& vec, size_t l, size_t r, stats& stats) {
+            if (l >= r) return;
+            T pivot = vec[(l + r) / 2]; stats.copy_count++;
+            size_t i = l;
+            size_t j = r;
+            while (i < j) {
+                while (vec[i] < pivot) {i++; stats.comparison_count++;}
+                while (vec[j] > pivot) {j--; stats.comparison_count++;}
+                stats.comparison_count += 2;
+                if (i >= j) break;
+                std::swap(vec[i++], vec[j--]);
+                stats.comparison_count += 3;
+            }
+            qsort_step(vec, l, j, stats);
+            qsort_step(vec, j + 1, r, stats);
+        }
+    };
+
+    stats stats;
+    qsort::qsort_step(vec, 0, vec.size() - 1, stats);
+
+    return stats;
 }
 
 #endif /* FUNCTIONS_H */

@@ -20,8 +20,9 @@ int main() {
     res = insertion_sort(fl2);
     std::cout << res << " [ " << fl2 << "]\n";
 
-    std::vector<int> v({1, 2, 3, 4, 6, 5, 7, 8, 9, 10, 11, 12, 13});
-    res = shaker_sort(v);
+    std::vector<int> v({6, 8, 2, 43, 1, 3});
+    //res = shaker_sort(v);
+    res = quick_sort(v);
     std::cout << res << " [ ";
     for (auto& el: v) std::cout << el << " "; 
     std::cout << "]\n";
