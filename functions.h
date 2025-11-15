@@ -16,6 +16,7 @@ std::ostream& operator<<(std::ostream& os, stats stat) {
 template<typename T>
 stats insertion_sort(LinkedList<T>& list) {
     stats stats;
+    if (list.size() < 2) return stats;
 
     auto main = list.head_->next;
     auto key = list.head_;
@@ -50,7 +51,34 @@ stats insertion_sort(LinkedList<T>& list) {
 
 template<typename T>
 stats shaker_sort(std::vector<T>& vec) { 
-    return stats(); 
+    stats stats;
+    if (vec.size() < 2) return stats;
+
+    size_t L = 0; size_t R = vec.size() - 1;
+    size_t ops = 0;
+    for (size_t i = 0; i < vec.size() / 2; i++) {
+        ops = 0;
+        for (size_t l = L; l < R; l++) {
+            if (vec[l] > vec[l+1]) {
+                ops++;
+                std::swap(vec[l], vec[l+1]);
+                stats.copy_count += 3;
+            }
+            stats.comparison_count++;
+        }
+        R--;
+        for (size_t r = R; r > L; r--) {
+            if (vec[r] < vec[r - 1]) {
+                ops++;
+                std::swap(vec[r], vec[r - 1]);
+                stats.copy_count += 3;
+            }
+            stats.comparison_count++;
+        }
+        L++;
+        if (ops == 0) break;
+    }
+    return stats; 
 }
 
 template<typename T>
