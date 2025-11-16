@@ -20,29 +20,29 @@ stats insertion_sort(LinkedList<T>& list) {
 
     auto main = list.head_->next;
     auto key = list.head_;
-    stats.copy_count += 2;
-    while (main) {
-        key = main; stats.copy_count++;
-        main = main->next; stats.copy_count++;
-        auto it = list.head_; stats.copy_count++;
 
-        while(key->value > it->value && it != key) { it = it->next; stats.comparison_count++;  stats.copy_count++;}
+    while (main) {
+        key = main;
+        main = main->next;
+        auto it = list.head_;
+
+        while(key->value > it->value && it != key) { it = it->next; stats.comparison_count++;}
         stats.comparison_count++;
 
         if (it != key) { // Перевязывание элементов списка
             auto it_prev = it->prev;
-            if (it->prev) { it->prev->next = key; stats.copy_count++;}
-            if (it == list.head_) { list.head_ = key; stats.copy_count++;}
+            if (it->prev) { it->prev->next = key;}
+            if (it == list.head_) { list.head_ = key;}
             it->prev = key; // [it_prev]->|key|<-[it]
 
             key->prev->next = key->next;
-            if (key->next) { key->next->prev = key->prev; stats.copy_count++;} // [key->prev]<->[key->next]
-            if (key == list.tail_) { list.tail_ = key->prev; stats.copy_count++;}
+            if (key->next) { key->next->prev = key->prev;} // [key->prev]<->[key->next]
+            if (key == list.tail_) { list.tail_ = key->prev;}
             
             key->next = it; 
             key->prev = it_prev; // [it_prev]<->[key]<->[it]
 
-            stats.copy_count += 5;
+            stats.copy_count += 3;
         }
     }
 
